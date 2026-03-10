@@ -1,0 +1,93 @@
+<!--
+    Template para mostrar toda la informacion de una persona.
+    Recibe como argumentos:
+      - Un objeto Persona `persona`.
+
+      - La lista de tuplas `direcciones`, que contiene el id de
+        las peliculas que ha dirigido y sus titulos.
+        Formato: [(id1, titulo1), (id2, titulo2), ...]
+
+      - Una lista de tuplas `actuaciones`, que contiene el id de cada pelicula
+        en la que ha actuado, su titulo y el nombre de su personaje.
+        Formato: [(id1, titulo1, papel1), (id2, nombre2, papel2), ...]
+-->
+{% extends "base_with_navbar.html" %}
+
+{% block title %}
+{{ persona.nombre }}
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center"> Perfil de {{ persona.nombre }} </h1>
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <div class="col-5 mt-1">
+        {% if persona.url_imagen %}
+            <img src="{{ persona.url_imagen }}" class="img-fluid" alt="{{ persona.nombre }}">
+        {% else %}
+            <div class="bg-secondary text-white p-5 text-center">Sin Imagen</div>
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-6 mt-4 mb-3 d-flex justify-content-center">
+      <h3> Popularidad: {{ "%.1f"|format(persona.popularidad) }} </h3>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <p><b>Fecha de Nacimiento:</b> {{ persona.cumple }} </p>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-6 ">
+      <p><b>Biografía (en inglés):</b> {{ persona.biografia }} </p>
+    </div>
+  </div>
+
+  <h2 class="text-center my-3"> Filmografía </h2>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+
+      {% if actuaciones %}
+        <h4 class="mt-3">Interpretaciones</h4>
+        <ul class="list-group mb-4">
+            {% for id_pelicula, titulo, papel in actuaciones %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ url_for('mostrar_pelicula', id_pelicula=id_pelicula) }}" class="text-decoration-none">
+                    {{ titulo }}
+                </a>
+                <span class="badge bg-primary rounded-pill">{{ papel }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if direcciones %}
+        <h4 class="mt-3">Direcciones</h4>
+        <ul class="list-group mb-4">
+            {% for id_pelicula, titulo in direcciones %}
+            <li class="list-group-item">
+                <a href="{{ url_for('mostrar_pelicula', id_pelicula=id_pelicula) }}" class="text-decoration-none">
+                    {{ titulo }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if not actuaciones and not direcciones %}
+        <p class="text-center text-muted">No hay registros de películas.</p>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

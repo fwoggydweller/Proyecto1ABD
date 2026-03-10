@@ -1,0 +1,88 @@
+/** Estilo de la app: Generado por Gemini para que se parezca
+    a otras apps de estilo 'cine'.
+ **/
+:root {
+    --bg-color: #141414;
+    --card-bg: #1f1f1f;
+    --text-main: #e5e5e5;
+
+    --accent-red: #e50914;
+    --accent-green: #46d369;
+    --accent-gold: #f5c518;
+    --accent-blue: #00d4ff;
+    --accent-yellow: #ffe600;
+
+    --neon-glow: 0 0 10px rgba(70, 211, 105, 0.5);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar-custom {
+    background-color: #000000;
+    border-bottom: 2px solid var(--accent-green);
+}
+
+.brand-logo-text {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    color: var(--accent-green) !important;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.1);
+}
+
+.nav-link {
+    color: #b3b3b3 !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.btn-cinematic {
+    background-color: var(--accent-green);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-cinematic:hover {
+    background-color: var(--accent-green);
+    color: #000;
+
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent-green),
+                0 0 30px var(--accent-green);
+}
+
+.footer-tmdb {
+    margin-top: auto;
+    padding: 2rem 0;
+    background-color: #000;
+    border-top: 1px solid #333;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.text-blue { color: var(--accent-blue) !important; }
+.text-yellow { color: var(--accent-yellow) !important; }
+.bg-blue { background-color: var(--accent-blue) !important; }
+.no-underline { text-decoration: none !important;}

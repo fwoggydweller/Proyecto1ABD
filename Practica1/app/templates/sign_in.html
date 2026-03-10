@@ -1,0 +1,35 @@
+<!-- Template para mostrar el formulario de acceso a la aplicacion.
+  Unicamente necesita la variable "form", que es una instancia del formulario
+  de acceso.
+-->
+{% extends "base_with_navbar.html" %}
+{% from "bootstrap5/form.html" import render_form %}
+
+{% block title %}
+Acceder
+{% endblock %}
+
+
+{% block content %}
+<h1 class="text-center"> Acceder </h1>
+
+<div class="container-fluid">
+  <!-- justify-content-center: muestra el contenido de la fila centrado -->
+  <div class="row justify-content-center">
+    <div class="col-6">
+    {{ render_form(form) }}
+    </div>
+  </div>
+  <div class="row justify-content-center">
+
+    <!-- mt-4: Añade 4px el margen superior (top) -->
+    <div class="col-6 mt-4">
+      <!-- btn: renderiza un botón
+           btn-primary: tipo de botón
+           form-control: adapta el tamaño al de la columna
+      -->
+    <a class="btn btn-primary form-control" href={{ url_for('sign_up') }} >Registrarse</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

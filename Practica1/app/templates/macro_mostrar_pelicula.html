@@ -1,0 +1,28 @@
+<!-- Macro para mostrar la informacion de una pelicula.
+     Se asume que debe ir dentro de un contenedor.
+     Se accede a la siguiente informacion:
+     id, url_imagen, titulo, fecha_estreno
+-->
+
+{% macro mostrar_pelicula(pelicula) %}
+<div class="card h-100 shadow-sm">
+    <a href="{{ url_for('mostrar_pelicula', id_pelicula=pelicula.id) }}">
+        {% if pelicula.url_imagen %}
+            <img src="{{ pelicula.url_imagen }}" class="card-img-top" alt="{{ url_for('static', filename='no-poster.png') }}" style="height: 300px; object-fit: cover;">
+        {% else %}
+            <img src="{{ url_for('static', filename='no-poster.png') }}" class="card-img-top" style="height: 300px; object-fit: cover;">
+        {% endif %}
+    </a>
+
+    <div class="card-body">
+        <h5 class="card-title text-center text-truncate">
+            <a href="{{ url_for('mostrar_pelicula', id_pelicula=pelicula.id) }}" class="text-decoration-none text-dark">
+                {{ pelicula.titulo }}
+            </a>
+        </h5>
+    </div>
+    <div class="card-footer text-center text-muted small">
+        Popularidad: {{ pelicula.popularidad }}
+    </div>
+</div>
+{% endmacro %}

@@ -1,0 +1,133 @@
+<!--
+    Template para mostrar todas las personas
+    que se encuentran disponibles para fichar.
+    Recibe como parametros:
+        * Un objeto paginacion `page`
+          de personas disponibles para contratar.
+          Solo accede a los campos "id", "nombre", "cache".
+
+        * Un float `presupuesto` que se corresponde
+          con el presupuesto del usuario actual.
+
+    Utiliza JS para confirmar el contrato
+    con una de esas personas (confirmacion-compra.js).
+-->
+
+{% extends "base_with_navbar.html" %}
+{% from "bootstrap5/pagination.html" import render_pagination %}
+
+{% block title %}
+Mercado de Talentos
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="row mb-4 align-items-center bg-dark text-white p-3 rounded shadow-sm border border-secondary">
+        <div class="col-md-6">
+            <h1 class="m-0" style="font-family: 'Bebas Neue', cursive; color: var(--accent-gold);">
+                Mercado de Talentos
+            </h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <span class="fs-4 me-2">Presupuesto:</span>
+            <span class="fs-2 fw-bold text-success">${{ presupuesto }}</span>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for persona in page.items %}
+            
+            {% set cache = persona.cache %}
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 bg-light">
+                    <div class="position-relative">
+                        {% if persona.url_imagen %}
+                            <img src="{{ persona.url_imagen }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                                <i class="fa-solid fa-user fa-3x"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">
+                            <a href="{{ url_for('mostrar_persona', id_persona=persona.id) }}" class="fw-bold text-dark no-underline">{{ persona.nombre }}</a>
+                        </h5>
+                        <div class="d-flex justify-content-between align-items-center bg-white p-2 rounded border">
+                            <small class="text-muted fw-bold">Coste</small>
+                            <span class="fw-bold text-dark">${{ cache }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 pb-3">
+                        <form id="form-hire-{{ persona.id }}" action="{{ url_for('contratar_persona', id_persona=persona.id) }}" method="POST">
+
+
+                            {% if presupuesto >= cache %}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                                <button type="button"
+                                        class="btn btn-success w-100 fw-bold shadow-sm"
+                                        onclick="confirmarContrato('{{ persona.id }}', '{{ persona.nombre }}', '{{ cache }}')">
+                                    <i class="fa-solid fa-handshake me-2"></i> Contratar
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-danger w-100" disabled>
+                                    <i class="fa-solid fa-ban me-2"></i> Fondos Insuficientes
+                                </button>
+                            {% endif %}
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+            {{ render_pagination(page) }}
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border-secondary">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" style="color: var(--accent-gold);">Confirmar Contratación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body text-center">
+        <p class="fs-5">¿Deseas contratar a <b id="modal-nombre-persona" class="text-white"></b>?</p>
+        
+        <div class="alert alert-warning d-inline-block fw-bold">
+            Costo: $<span id="modal-coste"></span>
+        </div>
+        
+        <p class="small mt-2">Esta cantidad se descontará de tu presupuesto inmediatamente.</p>
+      </div>
+      
+      <div class="modal-footer border-secondary justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success fw-bold" id="btn-confirmar-final">
+            <i class="fa-solid fa-check"></i> Pagar y Contratar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/confirmacion-compra.js') }}"></script>
+{% endblock %}

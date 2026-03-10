@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top shadow-lg">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('home') if 'home' in config else '#' }}">
+      <img src="{{ url_for('static', filename='dreamcast.png') }}" width="70" height="70">
+      <span class="brand-logo-text">
+        Dream Cast
+      </span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#movieNav" aria-controls="movieNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="movieNav">
+
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('listar_peliculas') }}">
+                    <i class="fa-solid fa-film"></i> Peliculas
+                </a>
+            </li>
+        </ul>
+        {% set current_user = current_user.is_authenticated %}
+
+        {% if current_user %}
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('mostrar_mercado') }}">
+                        <i class="fa-solid fa-store"></i> Mercado
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('mostrar_fichajes') }}">
+                        <i class="fa-solid fa-person-harassing"></i> Mis fichajes
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('clasificacion_usuarios') }}">
+                        <i class="fa-solid fa-ranking-star"></i> Clasificación
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+
+        <ul class="navbar-nav">
+
+            {% if not current_user %}
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="{{ url_for('sign_up') }}">Registrarse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-cinematic" href="{{ url_for('sign_in') }}">Acceder</a>
+                </li>
+            {% else %}
+
+                <li class="nav-item">
+                    <a class="btn btn-cinematic" href="{{ url_for('log_out') }}">Desconectarse</a>
+                </li>
+
+            {% endif %}
+        </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content_with_flash %}
+<div class="page-wrapper">
+
+    <div class="flex-grow-1">
+        {{ super() }}
+    </div>
+
+    <footer class="footer-tmdb">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
+                         alt="The Movie Database (TMDB)"
+                         style="width: 50px; height: auto; margin-bottom: 10px; opacity: 0.8;">
+                    <br>
+                    <small>
+                        This product uses the TMDB API but is not endorsed or certified by TMDB.<br>
+                        © 2026 Ampliacion de Bases de Datos - UCM.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+<!-- Template para mostrar la informacion de varias peliculas paginadas.
+     Recibe como argumentos:
+      - La pagina de objetos Pelicula a mostrar.
+     Invoca a la macro `mostrar_pelicula`, la cual
+     utiliza la siguiente informacion de los objetos Pelicula:
+     id, url_imagen, titulo, fecha_estreno
+     -->
+
+{% extends "base_with_navbar.html" %}
+{% from "bootstrap5/pagination.html" import render_pagination %}
+{% from "macro_mostrar_pelicula.html" import mostrar_pelicula %}
+
+{% block title %}
+Catálogo de Películas
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center my-4" style="font-family: 'Bebas Neue', cursive;"> Catálogo de Películas </h1>
+
+<div class="container pb-5">
+
+  {% if page.items %}
+
+      {% for pelicula in page.items %}
+
+        {% if loop.index0 % 4 == 0 %}
+          <div class="row mb-4">
+        {% endif %}
+
+        <div class="col-12 col-md-6 col-lg-3">
+            {{ mostrar_pelicula(pelicula) }}
+        </div>
+
+        {% if loop.index0 % 4 == 3 or loop.last %}
+          </div>
+        {% endif %}
+
+      {% endfor %}
+
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+            {{ render_pagination(page) }}
+        </div>
+      </div>
+
+  {% else %}
+      <div class="alert alert-info text-center">
+          No hay películas registradas en la base de datos.
+      </div>
+  {% endif %}
+
+</div>
+{% endblock %}
