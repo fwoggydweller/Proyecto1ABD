@@ -10,7 +10,6 @@ from app import create_app, db
 from app.modelos import Persona, Pelicula, Dirige, Actua
 from sqlalchemy import select, func, update
 
-max = 0
 
 def carga_personas():
     with open('data/people.csv', 'r') as f:
@@ -24,18 +23,8 @@ def carga_personas():
                                    url_imagen=row["profile_url"],
                                    en_mercado=False
                                    ))
-            global max
-            max = max + 1
 
-def randomiza_personas():
-    min = int(max/2)
-    ran = random.randint(min, max)
-    i = 0
-    while(i<ran):
-        User = db.session.scalar(select(Persona.id).order_by(func.random()).limit(1))
-        if (User):
-            db.session.execute(update(Persona).where(Persona.id == User).values(en_mercado=True))
-        i= i+1
+
 
 def carga_pelis():
     with open('data/movies.csv', 'r') as f:
@@ -80,7 +69,6 @@ def carga_dirige():
 
 def popular_datos():
     carga_personas()
-    randomiza_personas()
     carga_pelis()
     db.session.commit()
 
