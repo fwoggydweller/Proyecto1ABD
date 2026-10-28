@@ -1,0 +1,8 @@
+¿Qué índices creéis que deberíais declarar en vuestras colecciones para mejorar las consultas?
+
+Para agilizar las querries, puesto que accedemos de forma recurrente a los siguientes datos de la bd, podríamos implementar índices en las siguientes secciones con el siguiente orden de prioridad:
+
+- Concursantes.
+- Anyo.
+- Pais (organizador).
+- Pais (concursante).
